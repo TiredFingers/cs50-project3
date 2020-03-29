@@ -8,6 +8,7 @@
     <script>
 
     let cart = {0: {'total_price': 0}};
+    let totalView = undefined;
 
     function plateClick(plate){
 
@@ -24,7 +25,7 @@
         cart[0].total_price += price;
 
         localStorage.setItem('cart', JSON.stringify(cart));
-
+        updateTotal();
     }
 
     function additionClick(addition, plateId){
@@ -45,16 +46,36 @@
                 cart[0]['total_price'] += price;
 
                 localStorage.setItem('cart', JSON.stringify(cart));
-
+                updateTotal();
                 return;
             }
         }
 
     }
 
+    function initCart(){
+
+        let localStorageCart = localStorage.getItem('cart');
+
+        if(localStorageCart != null){
+
+            cart = JSON.parse(localStorageCart);
+        }
+    }
+
+    function updateTotal(){
+
+        if(typeof totalView !== 'undefined'){
+            totalView.innerHTML = cart[0].total_price.toFixed(2);
+        }
+    }
 
     document.addEventListener('DOMContentLoaded', function(){
 
+        totalView = document.getElementById('total-view');
+
+        initCart();
+        updateTotal();
     });
 
     {% block custom_script %}
@@ -78,6 +99,8 @@
 
             <p>
                 <a href="/store/cart/">Shopping cart</a>
+                &nbsp;
+                <span id="total-view"></span>
             </p>
         {% else %}
             <ul>
