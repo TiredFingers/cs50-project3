@@ -1,0 +1,57 @@
+{% extends '../store_base.html' %}
+
+{% block custom_script %}
+{% endblock %}
+
+{% block custom_style %}
+
+.menu-item{
+
+    cursor: pointer;
+    border-bottom: 1px dotted blue;
+    color: blue;
+}
+
+{% endblock %}
+
+
+{% block content %}
+
+<ul>
+{% for k, v in menu.items %}
+
+    <b>{{ v.name }}</b>
+
+    {% for plate in v.plates %}
+
+        <li>
+            <span class="menu-item" data-id="{{ plate.id }}" data-food-type="plate"
+                  onclick="plateClick(this)" data-small-price="{{ plate.itself.small_price }}"
+                  data-big-price="{{ plate.itself.big_price }}">{{ plate.name }}</span>
+            <span class="menu-item">small: {{ plate.itself.small_price }}</span>
+            <span class="menu-item">small: {{ plate.itself.big_price }}</span>
+        </li>
+
+        {% for addition in plate.additions %}
+
+            {% if forloop.first %}
+                <ul>
+            {% endif %}
+                    <li>
+                        <span class="menu-item" data-id="{{ addition.id }}" data-food-type="addition"
+                              onclick="additionClick(this, {{ plate.id }})" data-small-price="{{ addition.small_price }}"
+                              data-big-price="{{ addition.big_price }}">{{ addition.name }}
+                        </span>
+                    </li>
+            {% if forloop.last %}
+                </ul>
+            {% endif %}
+
+        {% endfor %}
+
+    {% endfor %}
+
+{% endfor %}
+</ul>
+
+{% endblock %}

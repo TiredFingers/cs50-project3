@@ -13,17 +13,15 @@
 
         let dbId = +plate.attributes[1].value;
 
-        let smallPrice = plate.attributes[4].value;
-        let bigPrice = plate.attributes[5].value;
+        let price = +plate.attributes[4].value;
 
         cart[dbId] = {};
 
         cart[dbId].name = plate.innerHTML;
-        cart[dbId].small_price = +smallPrice;
-        cart[dbId].big_price = +bigPrice;
+        cart[dbId].price = price;
         cart[dbId].additions = [];
 
-        cart[0].total_price += +smallPrice;
+        cart[0].total_price += price;
 
         localStorage.setItem('cart', JSON.stringify(cart));
 
@@ -41,11 +39,10 @@
 
                 let name = addition.innerHTML;
                 let dbId = +addition.attributes[1].value;
-                let smallPrice = +addition.attributes[4].value;
-                let bigPrice = +addition.attributes[5].value;
+                let price = +addition.attributes[4].value;
 
-                cart[plate].additions.push({id: dbId, small_price: smallPrice, big_price: bigPrice, name: name});
-                cart[0]['total_price'] += smallPrice;
+                cart[plate].additions.push({id: dbId, price: price, name: name});
+                cart[0]['total_price'] += price;
 
                 localStorage.setItem('cart', JSON.stringify(cart));
 
