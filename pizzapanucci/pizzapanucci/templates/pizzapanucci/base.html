@@ -15,10 +15,11 @@
         let dbId = +plate.attributes[1].value;
 
         let price = +plate.attributes[4].value;
+        let name = plate.attributes[5].value;
 
         cart[dbId] = {};
 
-        cart[dbId].name = plate.innerHTML;
+        cart[dbId].name = name;
         cart[dbId].price = price;
         cart[dbId].additions = [];
 
@@ -38,7 +39,7 @@
 
             if(plate === plateId){
 
-                let name = addition.innerHTML;
+                let name = addition.attributes[5].value;
                 let dbId = +addition.attributes[1].value;
                 let price = +addition.attributes[4].value;
 
@@ -57,7 +58,8 @@
 
         let localStorageCart = localStorage.getItem('cart');
 
-        if(localStorageCart != null){
+        if(typeof localStorageCart === 'string' && localStorageCart !== 'null'
+            && localStorageCart.length > 0 && JSON.stringify(cart).length <= 23){
 
             cart = JSON.parse(localStorageCart);
         }

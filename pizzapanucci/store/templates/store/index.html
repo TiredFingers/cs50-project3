@@ -46,14 +46,14 @@ color: blue;
             {% if plate.itself.small_price > 0%}
             <span class="menu-item" data-id="{{ plate.id }}" data-food-type="plate"
                   onclick="plateClick(this)"
-                  data-price="{{ plate.itself.small_price }}">{{ plate.itself.small_price }}$</span>
+                  data-price="{{ plate.itself.small_price }}" data-name="{{ plate.name }}">{{ plate.itself.small_price }}$</span>
             {% endif %}
         </td>
         <td>
             {% if plate.itself.big_price > 0 %}
             <span class="menu-item" data-id="{{ plate.id }}" data-food-type="plate"
                   onclick="plateClick(this)"
-                  data-price="{{ plate.itself.big_price }}">{{ plate.itself.big_price }}$</span>
+                  data-price="{{ plate.itself.big_price }}" data-name="{{ plate.name }}">{{ plate.itself.big_price }}$</span>
             {% endif %}
         </td>
 
@@ -71,12 +71,12 @@ color: blue;
         <td>
             <span class="menu-item" data-id="{{ addition.id }}" data-food-type="addition"
                   onclick="additionClick(this, {{ plate.id }})"
-                  data-price="{{ addition.small_price }}">{{ addition.small_price }}$</span>
+                  data-price="{{ addition.small_price }}" data-name="{{ addition.name }}">{{ addition.small_price }}$</span>
         </td>
         <td>
             <span class="menu-item" data-id="{{ addition.id }}" data-food-type="addition"
                   onclick="additionClick(this, {{ plate.id }})"
-                  data-price="{{ addition.big_price }}">{{ addition.big_price }}$</span>
+                  data-price="{{ addition.big_price }}" data-name="{{ addition.name }}">{{ addition.big_price }}$</span>
         </td>
 
         {% if forloop.last %}

@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class FoodType(models.Model):
@@ -30,6 +31,10 @@ class FoodAddition(models.Model):
         return self.name
 
 
-class Cart(models.Model):
-    id_user = models.IntegerField()
-    cart = models.TextField() #json presentation of cart of user
+class Orders(models.Model):
+
+     id_user = models.IntegerField()
+     cart = models.TextField()
+
+     def __str__(self):
+         return 'id user: ' + str(self.id_user) + ' cart: ' + str(self.cart)

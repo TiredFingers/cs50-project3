@@ -2,6 +2,89 @@
 
 {% block content %}
 
+<script>
+
+    document.addEventListener('DOMContentLoaded', function(){
+        let cartPositions = document.getElementById('cart-positions');
+        let jsonCart = localStorage.getItem('cart');
+        let localCart = JSON.parse(jsonCart);
+        let cartValue = document.getElementById('cart_value');
+
+        cartValue.value = jsonCart;
+
+        if(typeof localCart !== 'undefined'){
+
+            for(let item in localCart){
+
+                if(item === '0'){
+                    continue;
+                }
+
+                let tr = document.createElement('tr');
+                let td1 = document.createElement('td');
+                let td2 = document.createElement('td');
+
+                td1.innerHTML = localCart[item].name;
+                td2.innerHTML = localCart[item].price + '$';
+
+                tr.appendChild(td1);
+                tr.appendChild(td2);
+
+                cartPositions.appendChild(tr);
+
+                for(let addition in localCart[item].additions){
+
+                    let tr = document.createElement('tr');
+                    let td1 = document.createElement('td');
+                    let td2 = document.createElement('td');
+
+                    td1.innerHTML = '+&nbsp;' + localCart[item].additions[addition].name;
+                    td2.innerHTML = localCart[item].additions[addition].price + '$';
+
+                    tr.appendChild(td1);
+                    tr.appendChild(td2);
+
+                    cartPositions.appendChild(tr);
+                }
+
+            }
+
+            let tr = document.createElement('tr');
+            let td1 = document.createElement('td');
+            let td2 = document.createElement('td');
+
+            td1.innerHTML = 'total: ';
+            td2.innerHTML = cart[0]['total_price'].toFixed(2) + '$';
+
+            tr.appendChild(td1);
+            tr.appendChild(td2);
+
+            cartPositions.appendChild(tr);
+
+        }
+    });
+
+</script>
+
+<table id="cart-positions">
+    <tr>
+        <th>
+            Name
+        </th>
+        <th>
+            Price
+        </th>
+    </tr>
+</table>
+
+<form action="{% url 'store:order' %}" method="post">
+
+    {% csrf_token %}
+
+    <input type="hidden" name="order" id="cart_value">
+
+    <input type="submit">
+</form>
 
 
 {% endblock %}
