@@ -1,0 +1,25 @@
+{% extends '../authorization_base.html' %}
+
+{% block content %}
+
+<h1>Registration</h1>
+
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'authorization:registration' %}" method="post">
+
+    {% csrf_token %}
+
+    <label>Username</label>
+    <input type="text" name="username" required>
+    <br>
+    <label>Password</label>
+    <input type="password" name="password" required>
+
+    <input type="submit">
+
+</form>
+
+{% endblock %}

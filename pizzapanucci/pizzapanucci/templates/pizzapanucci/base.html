@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" src="{% static "pizzapanucci/style.css" %}">
+    <title>{% block title %}Pizza panucci{% endblock %}</title>
+
+    <script>
+
+    let cart = {0: {'total_price': 0}};
+
+    function plateClick(plate){
+
+        let dbId = +plate.attributes[1].value;
+
+        let smallPrice = plate.attributes[4].value;
+        let bigPrice = plate.attributes[5].value;
+
+        cart[dbId] = {};
+
+        cart[dbId].name = plate.innerHTML;
+        cart[dbId].small_price = +smallPrice;
+        cart[dbId].big_price = +bigPrice;
+        cart[dbId].additions = [];
+
+        cart[0].total_price += +smallPrice;
+
+        localStorage.setItem('cart', JSON.stringify(cart));
+
+    }
+
+    function additionClick(addition, plateId){
+
+        plateId = +plateId;
+
+        for(let plate in cart){
+
+            plate = +plate;
+
+            if(plate === plateId){
+
+                let name = addition.innerHTML;
+                let dbId = +addition.attributes[1].value;
+                let smallPrice = +addition.attributes[4].value;
+                let bigPrice = +addition.attributes[5].value;
+
+                cart[plate].additions.push({id: dbId, small_price: smallPrice, big_price: bigPrice, name: name});
+                cart[0]['total_price'] += smallPrice;
+
+                localStorage.setItem('cart', JSON.stringify(cart));
+
+                return;
+            }
+        }
+
+    }
+
+
+    document.addEventListener('DOMContentLoaded', function(){
+
+    });
+
+    {% block custom_script %}
+    {% endblock %}
+    </script>
+
+    <style>
+
+    {% block custom_style %}
+    {% endblock %}
+    </style>
+
+</head>
+
+<body>
+    <div id="sidebar">
+        {% block sidebar %}
+
+        {% if user.is_authenticated %}
+            <p>Hello {{ user.username }}&nbsp;&nbsp;<a href="/authorization/logout">Sign Out</a></p>
+
+            <p>
+                <a href="/store/cart/">Shopping cart</a>
+            </p>
+        {% else %}
+            <ul>
+                <li><a href="/authorization/login">Sign In</a></li>
+                <li><a href="/authorization/registration">Sign Up</a></li>
+            </ul>
+        {% endif %}
+        {% endblock %}
+    </div>
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>
