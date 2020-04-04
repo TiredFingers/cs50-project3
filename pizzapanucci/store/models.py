@@ -33,8 +33,9 @@ class FoodAddition(models.Model):
 
 class Orders(models.Model):
 
-     id_user = models.IntegerField()
-     cart = models.TextField()
+    id_user = models.IntegerField()
+    cart = models.TextField()
 
-     def __str__(self):
-         return 'id user: ' + str(self.id_user) + ' cart: ' + str(self.cart)
+    def __str__(self):
+        return 'id user: ' + str(self.id_user) + ' cart: ' + str(self.cart)
+

@@ -1,0 +1,105 @@
+<fieldset class="module aligned {{ fieldset.classes }}">
+    {% if fieldset.name %}<h2>{{ fieldset.name }}</h2>{% endif %}
+    {% if fieldset.description %}
+        <div class="description">{{ fieldset.description|safe }}</div>
+    {% endif %}
+    {% for line in fieldset %}
+        <div class="form-row{% if line.fields|length_is:'1' and line.errors %} errors{% endif %}{% if not line.has_visible_field %} hidden{% endif %}{% for field in line %}{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% endfor %}">
+            {% if line.fields|length_is:'1' %}{{ line.errors }}{% endif %}
+            {% for field in line %}
+                <div{% if not line.fields|length_is:'1' %} class="fieldBox{% if field.field.name %} field-{{ field.field.name }}{% endif %}{% if not field.is_readonly and field.errors %} errors{% endif %}{% if field.field.is_hidden %} hidden{% endif %}"{% elif field.is_checkbox %} class="checkbox-row"{% endif %}>
+                    {% if not line.fields|length_is:'1' and not field.is_readonly %}{{ field.errors }}{% endif %}
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% else %}
+
+                            {% if field.field.name == 'cart' %}
+
+                                <div id="order">
+                                    {{ field.field.value }}
+                                </div>
+                                <table id="cart-positions">
+                                    <tr>
+                                        <th>
+                                            Name
+                                        </th>
+                                        <th>
+                                            Price
+                                        </th>
+                                    </tr>
+                                </table>
+                                <script>
+                                    let orderDiv = document.getElementById('order');
+                                    let order = JSON.parse(orderDiv.innerHTML);
+                                    let orderPositions = document.getElementById('cart-positions');
+
+                                    orderDiv.innerHTML = '';
+
+                                    let iter = 0;
+                                    let totalPrice = order[0];
+
+                                    delete order[0];
+
+                                    for(let position in order){
+
+                                        let tr = document.createElement('tr');
+                                        let td1 = document.createElement('td');
+                                        let td2 = document.createElement('td');
+
+                                        td1.innerHTML = order[position].name;
+                                        td2.innerHTML = order[position].price + '$';
+
+                                        tr.appendChild(td1);
+                                        tr.appendChild(td2);
+
+                                        orderPositions.appendChild(tr);
+
+                                        for(let addition in order[position].additions){
+
+                                            let tr = document.createElement('tr');
+                                            let td1 = document.createElement('td');
+                                            let td2 = document.createElement('td');
+
+                                            td1.innerHTML = '+&nbsp;' + order[position].additions[addition].name;
+                                            td2.innerHTML = order[position].additions[addition].price + '$';
+
+                                            tr.appendChild(td1);
+                                            tr.appendChild(td2);
+
+                                            orderPositions.appendChild(tr);
+                                        }
+
+                                    }
+
+                                    let tr = document.createElement('tr');
+                                    let td1 = document.createElement('td');
+                                    let td2 = document.createElement('td');
+
+                                    td1.innerHTML = 'total: ';
+                                    td2.innerHTML = totalPrice['total_price'].toFixed(2) + '$';
+
+                                    tr.appendChild(td1);
+                                    tr.appendChild(td2);
+
+                                    orderPositions.appendChild(tr);
+
+                                </script>
+
+                            {% else %}
+                                {{ field.field }}
+                            {% endif %}
+
+                        {% endif %}
+                    {% endif %}
+                    {% if field.field.help_text %}
+                        <div class="help">{{ field.field.help_text|safe }}</div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</fieldset>
